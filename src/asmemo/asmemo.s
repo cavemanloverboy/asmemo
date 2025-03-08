@@ -29,7 +29,6 @@ entrypoint:
         
         # If nondup, load signer byte into r3 and check its nonzero
         ldxb r3, [r1 + 9]
-        call sol_log_64_
         jeq r3, 0, nonsigner_error
 
         # Now load account data length into r3
