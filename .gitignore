@@ -8,3 +8,4 @@ keypair.json
 package-lock.json
 test-ledger
 yarn.lock
+target/

@@ -1,7 +1,3 @@
-
-
-# [num_accounts u64][[account info (88 bytes)]][account data][rent_epoch] .. [next account] .. [ix data len] [ix data] [program_id]
-
 .globl entrypoint
 entrypoint:
 
@@ -47,17 +43,17 @@ entrypoint:
         # After this operation
         # r0 = 0
         # r1 = ptr to start of ix data
-        # r2 = len of ix data
-        # r3-r9 = 0
+        # r2 = len of ix data (u64)
+        # r3 = ? (old scratch)
+        # r4-r9 = 0
         # Load ix data length (this assumes num_accounts is zero)
         ldxdw r2, [r1 + 8]
-        add64 r1, 16 // skip over num_accounts (8), ix data length (8)
+        add64 r1, 16 // num_accounts (8) + ix data length (8)
 
-
-    # TODO: validate ascii
-    call sol_log_
-
-    exit
+        # Log and return
+        # sol_log_ api: r1 points to start of msg/data, r2 is len of msg/dta
+        call sol_log_ 
+        exit
 
     duplicate_account_error:
         lddw r0, 420
@@ -67,5 +63,5 @@ entrypoint:
         lddw r0, 69
         exit
 
-.rodata
-    message: .ascii "Hello, Solana!"
+
+
